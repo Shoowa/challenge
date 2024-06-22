@@ -8,6 +8,10 @@ defmodule Challenge.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      {
+        Cache,
+        file_name()
+      }
     ]
 
     opts = [
