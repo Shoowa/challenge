@@ -9,6 +9,7 @@ defmodule Cache do
 
   @table :lunch
   @bizname "Applicant"
+  @food "FoodItems"
 
 
   def start_link(state \\ "") do
@@ -76,9 +77,27 @@ defmodule Cache do
   def read_vendor(vendor), do: GenServer.call(__MODULE__, {:read_vendor, vendor})
 
 
+  @doc ~S"""
+  Display list of vendors who include the desired word in the `FoodItems` String.
+
+      iex> Cache.read_food("tacos") |> length()
+      11
+
+  """
+  @spec read_food(String.t()) :: list(map())
+  def read_food(food), do: GenServer.call(__MODULE__, {:read_food, food})
+
+
   @impl true
   def handle_call({:read_vendor, vendor}, _from, state) do
     response = read_key(vendor)
+    {:reply, response, state}
+  end
+
+
+  @impl true
+  def handle_call({:read_food, food}, _from, state) do
+    response = seek_food(food)
     {:reply, response, state}
   end
 
@@ -89,6 +108,12 @@ defmodule Cache do
       [] -> nil
       _ -> nil
     end
+  end
+
+
+  defp seek_food(food) do
+    :ets.tab2list(@table)
+    |> Enum.filter(fn {_k, data} -> String.contains?(String.downcase(data[@food]), food) end)
   end
 
 
