@@ -11,6 +11,16 @@ defmodule Challenge.Application do
       {
         Cache,
         file_name()
+      },
+      {
+        Plug.Cowboy,
+        scheme: :http,
+        plug: Challenge.Router,
+        options: [port: cowboy_port()]
+      },
+      {
+        Plug.Cowboy.Drainer,
+        refs: :all
       }
     ]
 

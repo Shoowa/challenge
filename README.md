@@ -26,3 +26,6 @@ Each key in the table is unique, because the table is configured as a `set`. And
 ```
 
 A simple Client API exists for other processes to read particular data from the cache, such as `read_vendor()` & `read_food()`.
+
+## Router
+A web server offers un-secured JSON responses, and properly terminates TCP connections after transactions complete. The web server offers a route for checking the health of the application. If this application relied on a database, an additional route for reporting the status of a connection to that dependency would be valuable.
