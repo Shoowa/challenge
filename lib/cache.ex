@@ -57,4 +57,39 @@ defmodule Cache do
   end
 
 
+  @doc ~S"""
+  Display data about a single food truck.
+
+      iex> Cache.read_vendor("San Francisco Taco Truck")
+      %{
+          "Address" => "345 WILLIAMS AVE",
+          "ExpirationDate" => "11/15/2024 12:00:00 AM",
+          "FoodItems" => "Tacos: Tortas: Burritos",
+          "Latitude" => "37.72980548057414",
+          "Longitude" => "-122.39924710472444",
+          "Status" => "APPROVED",
+          "dayshours" => ""
+      }
+
+  """
+  @spec read_vendor(String.t()) :: map()
+  def read_vendor(vendor), do: GenServer.call(__MODULE__, {:read_vendor, vendor})
+
+
+  @impl true
+  def handle_call({:read_vendor, vendor}, _from, state) do
+    response = read_key(vendor)
+    {:reply, response, state}
+  end
+
+
+  defp read_key(key) do
+    case :ets.lookup(@table, key) do
+      [{_, response}] -> response
+      [] -> nil
+      _ -> nil
+    end
+  end
+
+
 end
