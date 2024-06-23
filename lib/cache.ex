@@ -54,7 +54,7 @@ defmodule Cache do
 
   defp internal_write(data) do
     d = data |> Map.pop!(@bizname)
-    :ets.insert(@table, d)
+    :ets.insert_new(@table, d)
   end
 
 
@@ -81,7 +81,7 @@ defmodule Cache do
   Display list of vendors who include the desired word in the `FoodItems` String.
 
       iex> Cache.read_food("tacos") |> length()
-      11
+      12
 
   """
   @spec read_food(String.t()) :: list(map())
