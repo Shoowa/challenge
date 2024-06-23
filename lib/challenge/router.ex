@@ -5,6 +5,7 @@ defmodule Challenge.Router do
 
   use Plug.Router
   use Plug.ErrorHandler
+  import Cache, only: [read_vendor: 1]
   require Jason
 
 
@@ -19,6 +20,11 @@ defmodule Challenge.Router do
 
   get "/health" do
     render_json conn, %{message: "OK"}
+  end
+
+
+  get "/v0/vendor/:name" do
+    render_json conn, read_vendor(name)
   end
 
 

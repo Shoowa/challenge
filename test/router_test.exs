@@ -25,4 +25,23 @@ defmodule RouterTest do
   end
 
 
+  test "vendor name" do
+    result = Jason.encode!(%{
+        "Address": "Assessors Block 3941/Lot001",
+        "ExpirationDate": "11/15/2024 12:00:00 AM",
+        "FoodItems": "Burgers: melts: hot dogs: burritos:sandwiches: fries: onion rings: drinks",
+        "Latitude": "37.764741322674965",
+        "Longitude": "-122.38712481217911",
+        "Status": "APPROVED",
+        "dayshours": ""
+    })
+
+    conn = conn(:get, "/v0/vendor/Natan's Catering")
+    conn = Challenge.Router.call(conn, @opts)
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert conn.resp_body == result
+  end
+
+
 end
