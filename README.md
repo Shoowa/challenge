@@ -29,3 +29,14 @@ A simple Client API exists for other processes to read particular data from the 
 
 ## Router
 A web server offers un-secured JSON responses, and properly terminates TCP connections after transactions complete. The web server offers a route for checking the health of the application. If this application relied on a database, an additional route for reporting the status of a connection to that dependency would be valuable.
+
+
+## Operate
+Open two separate terminals, and use [httpie](https://httpie.io/docs/cli) to request data.
+```bash
+~/challenge $ MIX_ENV=prod mix release demo #terminal 1
+~/challenge $ _build/prod/rel/demo/bin/demo start #terminal 1
+~/challenge $ http get "localhost:8888/health" #terminal 2
+~/challenge $ http get "localhost:8888/v0/vendor/Natan's Catering" #terminal 2
+~/challenge $ http get "localhost:8888/v0/food/burger" #terminal 2
+```

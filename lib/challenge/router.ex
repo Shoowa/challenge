@@ -5,7 +5,7 @@ defmodule Challenge.Router do
 
   use Plug.Router
   use Plug.ErrorHandler
-  import Cache, only: [read_vendor: 1]
+  import Cache, only: [read_vendor: 1, read_food: 1]
   require Jason
 
 
@@ -25,6 +25,13 @@ defmodule Challenge.Router do
 
   get "/v0/vendor/:name" do
     render_json conn, read_vendor(name)
+  end
+
+
+  get "/v0/food/:token" do
+    data = read_food(token)
+    |> Enum.into(%{})
+    render_json conn, data
   end
 
 
